@@ -6,30 +6,30 @@ import { Observable, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class BlogService {
-  private apiUrl = 'https://murmuring-spire-62571-4282a89100f1.herokuapp.com/api/v2';
+  private apiUrl = 'http://localhost:8000/api/v2';
 
   constructor(private http: HttpClient) { }
 
 
   getBlog(): Observable<any> {
-    return this.http.get<any>(`/blog/get-all-blogs`);
+    return this.http.get<any>(`${this.apiUrl}/blog/get-all-blogs`);
   }
 
   getBlogById(id): Observable<any> {
-    return this.http.get<any>(`/blog/get-blog/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/blog/get-blog/${id}`);
   }
 
 
   createBlog(blogData): Observable<any> {
-    return this.http.post<any>(`/blog/create-blog`, blogData);
+    return this.http.post<any>(`${this.apiUrl}/blog/create-blog`, blogData);
   }
 
   deleteBlog(id): Observable<any> {
-    return this.http.delete<any>(`/blog/delete-blog/${id}`);
+    return this.http.delete<any>(`${this.apiUrl}/blog/delete-blog/${id}`);
   }
 
   updateBlog(id, blogData): Observable<any> {
-    return this.http.put<any>(`/blog/update-blog/${id}`, blogData);
+    return this.http.put<any>(`${this.apiUrl}/blog/update-blog/${id}`, blogData);
   }
   
 

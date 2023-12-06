@@ -7,15 +7,15 @@ import { Observable } from 'rxjs';
 })
 export class AboutService {
 
-  private apiUrl = 'https://murmuring-spire-62571-4282a89100f1.herokuapp.com/api/v2';
+  private apiUrl = 'http://localhost:8000/api/v2';
 
   constructor(private http: HttpClient) { }
 
   createAbout(aboutData): Observable<any> {
-    return this.http.post<any>(`/about/create-about`, aboutData);
+    return this.http.post<any>(`${this.apiUrl}/about/create-about`, aboutData);
   }
 
   getAbout(): Observable<any> {
-    return this.http.get<any>(`/about/get-all-abouts`);
+    return this.http.get<any>(`${this.apiUrl}/about/get-all-abouts`);
   }
 }

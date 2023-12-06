@@ -6,7 +6,7 @@ import { Observable, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://murmuring-spire-62571-4282a89100f1.herokuapp.com/api/v2';
+  private apiUrl = 'http://localhost:8000/api/v2';
   private shop: any;
 
   constructor(private http: HttpClient) { }
@@ -18,7 +18,7 @@ export class AuthService {
 
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    return this.http.post<any>(`/shop/login-shop`, body, { headers, withCredentials: true })
+    return this.http.post<any>(`${this.apiUrl}/shop/login-shop`, body, { headers, withCredentials: true })
     .pipe(tap(shop => this.shop = shop));
   }
 
@@ -26,7 +26,7 @@ export class AuthService {
 
   loadShop(): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.get<any>(`/shop/getSeller`, { headers, withCredentials: true });
+    return this.http.get<any>(`${this.apiUrl}/shop/getSeller`, { headers, withCredentials: true });
   }
 
   async initShop(): Promise<void> {

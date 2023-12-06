@@ -6,18 +6,18 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OrderService {
-  private apiUrl = 'https://murmuring-spire-62571-4282a89100f1.herokuapp.com/api/v2'; 
+  private apiUrl = 'http://localhost:8000/api/v2'; 
 
   constructor(private http: HttpClient) { }
 
 
   getShopOrders(id): Observable<any> {
-    return this.http.get<any>(`/order/get-seller-all-orders/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/order/get-seller-all-orders/${id}`);
   }
 
   updateOrderStatus(id, status): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.put<any>(`/order/update-order-status/${id}`, status);
+    return this.http.put<any>(`${this.apiUrl}/order/update-order-status/${id}`, status);
   }
 
 

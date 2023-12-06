@@ -7,12 +7,12 @@ import { Observable } from 'rxjs';
 })
 export class ShopService {
 
-  private apiUrl = 'https://murmuring-spire-62571-4282a89100f1.herokuapp.com/api/v2';
+  private apiUrl = 'http://localhost:8000/api/v2';
 
   constructor(private http: HttpClient) { }
 
   
   updateShop(formData): Observable<any> {
-    return this.http.put<any>(`/shop/update-seller-info`, formData);
+    return this.http.put<any>(`${this.apiUrl}/shop/update-seller-info`, formData);
   }
 }

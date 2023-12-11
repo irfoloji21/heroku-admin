@@ -8,7 +8,7 @@ import { Observable, tap } from 'rxjs';
 
 export class BlogService {
 
-  private apiUrl = 'http://localhost:8000/api/v2';
+  private apiUrl = 'https://admin-multikart-5ccc1ae02ffd.herokuapp.com/api/v2';
 
   constructor(private http: HttpClient) { }
 

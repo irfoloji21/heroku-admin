@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AboutService {
 
-  private apiUrl = 'http://localhost:8000/api/v2';
+  private apiUrl = 'https://admin-multikart-5ccc1ae02ffd.herokuapp.com/api/v2';
 
   constructor(private http: HttpClient) { }
 

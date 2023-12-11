@@ -13,21 +13,29 @@
                 <div class="row">
                   <div class="col-xl-9 xl-50 col-sm-6 col-9">
                     <img
-                      src="assets/images/pro3/1.jpg"
+                      [src]="selectedProductImage.url || selectedProductImage[0].url"
                       alt=""
                       class="img-fluid image_zoom_1"
                     />
                   </div>
                   <div class="col-xl-3 xl-50 col-sm-6 col-3">
                     <ul class="file-upload-product">
-                      <li *ngFor="let item of url; let i = index">
+                      <li
+                      *ngFor="let image of selectedProductImage;  let i = index"
+                      >
                         <div class="box-input-file">
                           <input
+                            
                             class="upload"
                             type="file"
                             (change)="onFileChange($event, i)"
                           />
-                          <img class="imgUpload" alt="" [src]="item.img" />
+                          <img
+                            class="imgUpload"
+                            alt=""
+                            [src]="image.url"
+                            (click)="selectImage(image)"
+                          />
                         </div>
                       </li>
                     </ul>
@@ -202,8 +210,8 @@
                         name="gender"
                         [formControl]="productForm.controls['gender']"
                       >
-                        <option value="erkek">Erkek</option>
-                        <option value="kadın">Kadın</option>
+                        <option value="man">Erkek</option>
+                        <option value="woman">Kadın</option>
                         <option value="unisex">Unisex</option>
                         <option value="cocuk">Çocuk</option>
                       </select>

@@ -7,7 +7,18 @@
           <h5>Sub Categories</h5>
         </div>
         <div class="card-body">
-          <div class="btn-popup pull-right">
+          <div class="btn-popup">
+            <div class="searchArea">
+              <input
+                type="text"
+                class="filter-ngx form-control"
+                placeholder="Search..."
+                [(ngModel)]="searchText"
+              />
+              <button type="submit" (click)="search()" class="btn btn-primary">
+                Ara
+              </button>
+            </div>
             <button
               type="button"
               class="btn btn-primary"
@@ -102,20 +113,17 @@
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col" sortable="img" (sort)="onSort($event)">
-                      Image
-                    </th>
                     <th scope="col" sortable="name" (sort)="onSort($event)">
                       Name
                     </th>
-                    <th scope="col" sortable="action" (sort)="onSort($event)">
-                      Actions
-                    </th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr *ngFor="let catgory of categories">
                     <th scope="row">{{ catgory._id }}</th>
+                    <td>{{ catgory.name }}</td>
                     <td>
                       <img
                         [src]="[catgory.images[0].url]"
@@ -123,10 +131,12 @@
                         style="width: 20px"
                       />
                     </td>
-                    <td>{{ catgory.name }}</td>
                     <td>
-                      <a href="javascript:void(0)"
-                        ><i class="fa fa-edit f-12"></i></a
+                      <button
+                        href="javascript:void(0)"
+                        (click)="editSubCategory(catgory); openModal()"
+                      >
+                        <i class="fa fa-edit f-12"></i></button
                       >&nbsp;
                       <a
                         href="javascript:void(0)"
@@ -145,3 +155,54 @@
   </div>
 </div>
 <!-- Container-fluid Ends-->
+
+<!-- // SubCategory Opem Model -->
+
+<div class="custom-container">
+  <div class="modal" [ngClass]="{ show: isModalOpen }">
+    <div class="modal-content col-12 col-md-8 col-lg-6">
+      <button class="close-button" (click)="closeModal()">X</button>
+      <h3 class="text-center">Edit SubCategory</h3>
+      <form
+        [formGroup]="myFormEdit"
+        (submit)="updateSubCategory()"
+        class="needs-validation"
+      >
+        <div class="form">
+          <div class="form-group">
+            <label for="validationCustom01" class="mb-1">Category Name :</label>
+            <input
+              class="form-control"
+              formControlName="name"
+              id="validationCustom01"
+              type="text"
+            />
+          </div>
+          <div class="form-group">
+            <label for="validationCustom01" class="mb-1">Category Text :</label>
+            <textarea
+              class="form-control"
+              formControlName="description"
+              id="validationCustom01"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="validationCustom02" class="mb-1"
+              >Category Image :</label
+            >
+            <input
+              class="form-control"
+              formControlName="images"
+              id="validationCustom02"
+              type="file"
+              (change)="onFileChange($event)"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

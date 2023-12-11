@@ -5,6 +5,8 @@ import { ProductService } from '../../../../shared/service/product.service';
 import { AuthService } from 'src/app/shared/service/auth.service';
 import { CategoryService } from 'src/app/shared/service/category.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Product } from 'src/app/shared/tables/product';
+import { Category } from 'src/app/shared/tables/category';
 
 @Component({
   selector: 'app-add-product',
@@ -14,12 +16,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AddProductComponent implements OnInit {
 
   id: string;
-  categories: any[] = [];
+  categories: Category[] = [];
   selectedCategory: string = '';
   buttonText: string = 'Add';
   public productForm: UntypedFormGroup;
   public Editor = ClassicEditor;
   public counter: number = 1;
+  selectedProduct: Product[] = [];
+  selectedProductImage: any;
 
   public url = [
     {
@@ -59,6 +63,45 @@ export class AddProductComponent implements OnInit {
       category: [''],
       gender: [''],
     })
+  }
+
+  ngOnInit() {
+    this.categoryService.getCategory().subscribe(
+      (response) => {
+        this.categories = response.categories;
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+
+    this.route.params.subscribe(params => {
+      this.id = params['id'];
+      if (this.id) {
+        this.productService.getProductById(this.id).subscribe(
+          (response) => {
+            this.productForm.patchValue(response.product);
+            this.selectedCategory = response.product.category;
+            this.selectedProduct = response.product;
+            this.selectedProductImage = Object.keys(response.product.images).map(key => response.product.images[key]);
+            this.buttonText = 'Edit';
+          },
+          (error) => {
+            console.error(error);
+          }
+        );
+      } else {
+        this.selectedProductImage = [
+          { url: "assets/images/user.png" },
+          { url: "assets/images/user.png" },
+          { url: "assets/images/user.png" },
+          { url: "assets/images/user.png" },
+          { url: "assets/images/user.png" },
+        ];
+        this.buttonText = 'Add';
+      }
+    });
+
   }
 
   increment() {
@@ -143,12 +186,10 @@ export class AddProductComponent implements OnInit {
     if (this.productForm.valid) {
       const formData = this.productForm.value;
       const shop = this.authService.getShop();
-
       formData.shopId = shop.seller._id;
       formData.shop = shop;
       formData.category = this.selectedCategory;
-
-      console.log(this.id, "id")
+      
       this.productService.updateProduct(this.id, formData).subscribe(
         (response) => {
           this.router.navigate(['/products/physical/product-list']);
@@ -161,30 +202,7 @@ export class AddProductComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.categoryService.getCategory().subscribe(
-      (response) => {
-        console.log('Kategoriler', response);
-        this.categories = response.categories;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-
-    this.route.params.subscribe(params => {
-      this.id = params['id'];
-      this.productService.getProductById(this.id).subscribe(
-        (response) => {
-          console.log('Ürün', response);
-          this.productForm.patchValue(response.product);
-          this.selectedCategory = response.product.category;
-          this.buttonText = 'Edit';
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-    });
+  selectImage(image: any) {
+    this.selectedProductImage = image;
   }
 }

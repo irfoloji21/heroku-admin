@@ -5,8 +5,10 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class CouponService {
-  private apiUrl = 'https://murmuring-spire-62571-4282a89100f1.herokuapp.com/api/v2'; // apiUrl burada tanımlandı
+
+  private apiUrl = 'http://localhost:8000/api/v2'; // apiUrl burada tanımlandı
 
   constructor(private http: HttpClient) { }
 
@@ -20,8 +22,5 @@ export class CouponService {
 
   deleteCoupoun(id): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/coupon/delete-coupon/${id}`);
-  }
-
-
- 
+  } 
 }

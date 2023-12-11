@@ -10,18 +10,15 @@ import { OrderService } from 'src/app/shared/service/order.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
+
 export class DashboardComponent implements OnInit {
 
   public shop: any;
   public products: any[] = [];
   public productCount: number = 0;
   public orders: any[] = [];
-
-
-
   public doughnutData = doughnutData;
   public pieData = pieData;
-
 
   constructor(
     private authService: AuthService,
@@ -37,9 +34,7 @@ export class DashboardComponent implements OnInit {
   public doughnutChartShowLabels = chartData.doughnutChartShowLabels;
   public doughnutChartGradient = chartData.doughnutChartGradient;
   public doughnutChartTooltip = chartData.doughnutChartTooltip;
-
   public chart5 = chartData.chart5;
-
 
   // lineChart
   public lineChartData = chartData.lineChartData;
@@ -77,28 +72,21 @@ export class DashboardComponent implements OnInit {
   public smallLine4ChartColors = chartData.smallLine4ChartColors;
   public smallLine4ChartLegend = chartData.smallLine4ChartLegend;
   public smallLine4ChartType = chartData.smallLine4ChartType;
-
   public chart3 = chartData.chart3;
 
-
-
   // events
-  public chartClicked(e: any): void {
-  }
-  public chartHovered(e: any): void {
-  }
+  public chartClicked(e: any): void { }
+
+  public chartHovered(e: any): void { }
 
   ngOnInit() {
     this.auth();
-   
-
   }
 
   auth() {
     this.authService.loadShop().subscribe(
       (shop) => {
         this.shop = shop.seller;
-        console.log(this.shop);
         this.getShopProducts();
         this.getShopOrders();
       },
@@ -109,12 +97,10 @@ export class DashboardComponent implements OnInit {
   }
 
   getShopProducts() {
-    console.log(this.shop._id)
     this.productService.getShopProduct(this.shop._id).subscribe(
       (res) => {
         this.products = res.products;
         this.productCount = this.products.length;
-        console.log(this.productCount);
       },
       (error) => {
         console.log(error);
@@ -123,12 +109,9 @@ export class DashboardComponent implements OnInit {
   }
 
   getShopOrders() {
-    console.log(this.shop._id)
     this.orderService.getShopOrders(this.shop._id).subscribe(
       (res) => {
-        console.log(res);
         this.orders = res.orders;
-
       },
       (error) => {
         console.log(error);

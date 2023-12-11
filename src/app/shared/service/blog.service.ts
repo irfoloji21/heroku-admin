@@ -5,11 +5,12 @@ import { Observable, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
 export class BlogService {
-  private apiUrl = 'https://murmuring-spire-62571-4282a89100f1.herokuapp.com/api/v2';
+
+  private apiUrl = 'http://localhost:8000/api/v2';
 
   constructor(private http: HttpClient) { }
-
 
   getBlog(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/blog/get-all-blogs`);
@@ -18,7 +19,6 @@ export class BlogService {
   getBlogById(id): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/blog/get-blog/${id}`);
   }
-
 
   createBlog(blogData): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/blog/create-blog`, blogData);
@@ -32,5 +32,4 @@ export class BlogService {
     return this.http.put<any>(`${this.apiUrl}/blog/update-blog/${id}`, blogData);
   }
   
-
 }

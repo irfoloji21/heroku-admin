@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AboutService {
 
-  private apiUrl = 'https://admin-multikart-5ccc1ae02ffd.herokuapp.com/api/v2';
+  private apiUrl = 'https://murmuring-spire-62571-4282a89100f1.herokuapp.com/api/v2';
 
   constructor(private http: HttpClient) { }
 

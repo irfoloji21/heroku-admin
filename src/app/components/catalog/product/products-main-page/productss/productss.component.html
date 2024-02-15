@@ -1,0 +1,191 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="d-flex justify-content-between">
+          <div class="card-header">
+            <h5>{{ "Products" | translate }}</h5>
+          </div>
+          <div class="card-header">
+            <button (click)="addProduct()" type="submit" class="btn btn-primary">
+              {{ "Add product +" | translate }}
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-filters" *ngIf="isFilterApplied">
+          <div class="content">
+            <div class="d-flex">
+              <span class="Active-Filters">Active-Filters:</span>
+              <div>
+                <span class="keywords">Keywords:</span>
+              </div>
+              <div>
+                <ul>
+                  <li>
+                    <span id="searchTextSpan">{{ searchText }}</span>
+                    <button class="action-remove" type="button" (click)="clearAll()">
+                      <span>X</span>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="admin-keywords-title">
+            </div>
+          </div>
+          <div class="clearAll">
+            <a (click)="clearAll()" type="button">Clear all</a>
+          </div>
+        </div>
+        
+        
+
+
+
+
+        <div class="card-body">
+          <div class="custom-datatable">
+
+           
+
+            <div class="searchArea mx-2 d-flex" [formGroup]="searchForm">
+              <div>
+                <input type="text" class="filter-ngx form-control mx-2" placeholder="{{'Search...' | translate}}"
+                 formControlName="searchText" (keyup.enter)="buttonClick()" />
+              </div>
+              <div>
+                <button (click)="buttonClick()" type="button" class="btn btn-primary">
+                  {{ "Find" | translate }}
+                </button>
+              </div>
+            </div>
+            
+            
+            
+            <!-- actions start -->
+            <div class="actions m-3">
+              <div class="select-wrapper">
+                <select class="custom-select" id="actions" (change)="onActionChange($event)">
+                  <option value="" disabled selected>Select an action</option>
+                  <optgroup label="Delete">
+                    <option value="delete">Delete selected item(s)</option>
+                  </optgroup>
+                  <optgroup label="Change status">
+                    <option value="disable">Disable selected item(s)</option>
+                    <option value="enable">Enable selected item(s)</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+
+            <!-- actions End -->
+            <br />
+            <table class="table table-striped styled-table">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-center">Select</th>
+                  <th scope="col" sortable="index">
+                    {{ "ID" | translate }}
+                  </th>
+                  <!-- <th scope="col" sortable="product_id" class="text-center">
+                      {{ "Product id" | translate }}
+                    </th> -->
+                  <th class="text-center" scope="col" sortable="product">Image</th>
+                  <th scope="col" sortable="name">Name</th>
+                  <th scope="col" sortable="price">
+                    {{ "Price" | translate }}
+                  </th>
+                  <th scope="col" sortable="stock">
+                    {{ "Stock" | translate }}
+                  </th>
+                  <th scope="col" sortable="product_status">
+                    {{ "Status" | translate }}
+                  </th>
+                  <!-- <th scope="col" sortable="date" >
+                      {{ "Date" | translate }}
+                    </th>
+                    <th scope="col" sortable="total" >
+                      {{ "Total" | translate }}
+                    </th> -->
+                  <th class="text-center" scope="col" sortable="total">
+                    {{ "Action" | translate }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of product_list; let i = index">
+                  <td class="text-center align-middle">
+                    <input type="checkbox" (change)="toggleSelection(product);" [checked]="product.selected" />
+                  </td>
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <div class="img-container position-relative text-center">
+                      <a href="javascript:void(0)" class="d-block position-relative">
+                        <img [src]="[product.images[0].url]" class="img-fluid blur-up lazyload bg-img" />
+                        <div class="product-hover position-absolute top-0 start-0 w-100 h-100">
+                          <button class="btn btn-transparent" type="button" data-toggle="modal" data-target="#exampleModalCenter">
+                            <i class="fa fa-eye text-theme" (click)="detailProduct(product)"></i>
+                          </button>
+                        </div>
+                      </a>
+                    </div>
+                  </td>
+                  <td>{{ product.name.slice(0, 15) }}</td>
+                  <td>
+                    <span class="product-price">{{ product.originalPrice | currency }}</span>
+                  </td>
+                  <td>{{ product.stock }} <span>in stock</span></td>
+                  <td>
+                    <span class="badge badge-secondary">status</span>
+                  </td>
+                  <td class="text-center">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                      <i class="icon-pencil-alt" (click)="editProduct(product._id)"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+              
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- //Product Detail Open Modal -->
+
+<div class="custom-container">
+  <div class="modal" [ngClass]="{ show: isModalOpen }">
+    <div class="modal-content col-12 col-md-8 col-lg-6">
+      <button class="close-button" (click)="closeModal()">X</button>
+      <div class="text-center" *ngIf="productDetail">
+        <h3>{{ productDetail.name }}</h3>
+      </div>
+      <div class="container-fluid">
+        <div class="card">
+          <div class="row product-page-main card-body">
+            <div class="container-fluid">
+              <div class="card">
+                <div class="row product-page-main card-body border-gray">
+                  <div class="col-xl-2"></div>
+                  <div class="col-xl-8">
+                    <section>
+                      <ks-carousel [id]="101" [images]="imagesRect"></ks-carousel>
+                    </section>
+                  </div>
+                  <div class="col-xl-2"></div>
+                  <hr />
+                  <a (click)="editProduct(productDetail._id)" class="btn btn-primary">Go to Details Page</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>

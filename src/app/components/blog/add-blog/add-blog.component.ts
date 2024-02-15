@@ -13,7 +13,7 @@ import { CategoryService } from 'src/app/shared/service/category.service';
 })
 
 export class AddBlogComponent implements OnInit {
-  myForm: FormGroup;
+  blogForm: FormGroup;
   id: string;
   categories: any[] = [];
   selectedCategory: string = '';
@@ -28,12 +28,11 @@ export class AddBlogComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: UntypedFormBuilder,
   ) {
-    this.myForm = this.fb.group({
+    this.blogForm = this.fb.group({
       name: ['', Validators.required],
       slug: ['', Validators.required],
       description: ['', Validators.required],
       shortDescription: ['', Validators.required],
-      // images: ['', Validators.required],
       category: [''],
       tags: [''],
     });
@@ -59,10 +58,7 @@ export class AddBlogComponent implements OnInit {
 
         reader.onload = (e: any) => {
           imageUrls.push(e.target.result);
-          this.myForm.get('images').setValue(imageUrls);
-
-          console.log('imageUrls:', imageUrls);
-          console.log(this.myForm.value.images);
+          this.blogForm.get('images').setValue(imageUrls);
         };
 
         reader.readAsDataURL(file);
@@ -71,9 +67,8 @@ export class AddBlogComponent implements OnInit {
   }
 
   submitForm() {
-    console.log("form submitted");
-    if (this.myForm.valid) {
-      const formData = this.myForm.value;
+    if (this.blogForm.valid) {
+      const formData = this.blogForm.value;
       const shop = this.authService.getShop();
       formData.shopId = shop.seller._id;
       formData.shop = shop;
@@ -82,7 +77,6 @@ export class AddBlogComponent implements OnInit {
       this.blogService.createBlog(formData).subscribe(
         (response) => {
           this.router.navigate(['/blog/list-blog']);
-          console.log('Ürün başarıyla oluşturuldu:', response);
         },
         (error) => {
           console.error('Ürün oluşturulurken hata oluştu:', error);
@@ -92,19 +86,16 @@ export class AddBlogComponent implements OnInit {
   }
 
   editBlog() {
-    console.log("editform submitted")
-    if (this.myForm.valid) {
-      const formData = this.myForm.value;
+    if (this.blogForm.valid) {
+      const formData = this.blogForm.value;
       const shop = this.authService.getShop();
       formData.shopId = shop.seller._id;
       formData.shop = shop;
       formData.category = this.selectedCategory;
 
-      console.log(this.id, "id")
       this.blogService.updateBlog(this.id, formData).subscribe(
         (response) => {
           this.router.navigate(['/blog/list-blog']);
-          console.log('Blog başarıyla güncellendi:', response);
         },
         (error) => {
           console.error('Blog güncellenirken hata oluştu:', error);
@@ -132,11 +123,10 @@ export class AddBlogComponent implements OnInit {
     );
 
     this.route.params.subscribe(params => {
-      // this.buttonText = 'Edit';
       this.id = params['id'];
       this.blogService.getBlogById(this.id).subscribe(
         (response) => {
-          this.myForm.patchValue(response.blog);
+          this.blogForm.patchValue(response.blog);
           this.selectedCategory = response.product.category;
         },
         (error) => {

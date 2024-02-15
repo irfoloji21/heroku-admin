@@ -41,33 +41,23 @@ export class NavService {
 			path: '/dashboard/default', title: 'Dashboard', icon: 'home', type: 'link', badgeType: 'primary', active: false
 		},
 		{
-			title: 'Add + ', icon: 'box', type: 'sub', active: false, children: [
-				{
-					title: 'Products add', type: 'sub', children: [
-						// { path: '/products/physical/collection', title: 'Collection', type: 'link' },
-						// { path: '/products/physical/sub-category', title: 'Sub Category', type: 'link' },
-						{ path: '/products/physical/product-list', title: 'Product List', type: 'link' },
-						// { path: '/products/physical/product-detail', title: 'Product Detail', type: 'link' },
-						{ path: '/products/physical/add-product', title: 'Add Product', type: 'link' },
-					]
-				},
-				{
-					title: 'Categories add', type: 'sub', children: [
-						{ path: '/products/digital/digital-category', title: 'Main category', type: 'link' },
-						{ path: '/products/digital/digital-sub-category', title: 'Sub Category', type: 'link' },
-						// { path: '/products/digital/digital-product-list', title: 'Product List', type: 'link' },
-						// { path: '/products/digital/digital-add-product', title: 'Add Category', type: 'link' },
-					]
-				},
-				{
-					title: 'Collection add', type: 'sub', children: [
-						{ path: '/products/physical/collection', title: 'Collection', type: 'link' },
-					]
-				},
-				
+			title: 'Catalog', icon: 'folder', type: 'sub', children: [
+				// { path: '/products/physical/product-list', title: 'Product List', type: 'link' },
+				// { path: '/products/physical/add-product', title: 'Product Add ' , type: 'link' },
+				{ path: '/products/catalog/productss', title: 'Products ' , type: 'link' },
 			]
 		},
-		// { path: '/products/physical/collection', title: 'Collection', type: 'link' },
+		{
+			title: 'Categories', icon: 'folder', type: 'sub', children: [
+				{ path: '/products/category/main-category', title: 'Main Category', type: 'link' },
+				{ path: '/products/category/sub-sub-category', title: 'Sub Category', type: 'link' },
+			]
+		},
+		{
+			title: 'Collection', icon: 'folder', type: 'sub', children: [
+				{ path: '/products/physical/collection', title: 'Collection', type: 'link' },
+			]
+		},
 		{
 			title: 'Sales', icon: 'dollar-sign', type: 'sub', active: false, children: [
 				{ path: '/sales/orders', title: 'Orders', type: 'link' },
@@ -83,8 +73,8 @@ export class NavService {
 		},
 		{
 			title: 'Pages', icon: 'clipboard', type: 'sub', active: false, children: [
-				{ path: '/pages/list-page', title: 'List Page', type: 'link' },
-				{ path: '/pages/create-page', title: 'Create Page', type: 'link' },
+				{ path: '/list-page', title: 'List Page', type: 'link' },
+				{ path: '/create-page', title: 'Create Page', type: 'link' },
 			]
 		},
 		// {
@@ -124,11 +114,11 @@ export class NavService {
 		// {
 		// 	title: 'Reports', path: '/reports', icon: 'bar-chart', type: 'link', active: false
 		// },
-		
+
 		// {
 		// 	title: 'Invoice', path: '/invoice', icon: 'archive', type: 'link', active: false
 		// },
-		
+
 		{
 			title: 'Blogs', icon: 'align-left', type: 'sub', active: false, children: [
 				{ path: '/blog/list-blog', title: 'Blog Lists', type: 'link' },
@@ -141,7 +131,7 @@ export class NavService {
 			]
 		},
 		{
-			title: 'Login',path: '/auth/login', icon: 'log-in', type: 'link', active: false
+			title: 'Login', path: '/auth/login', icon: 'log-in', type: 'link', active: false
 		},
 	]
 	// Array

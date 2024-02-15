@@ -19,7 +19,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 export class RefundsComponent implements OnInit {
 
-  myForm: FormGroup;
+  refundsForm: FormGroup;
   public shop: any;
   public refunds: any[] = [];
   public searchText: string = '';
@@ -40,7 +40,7 @@ export class RefundsComponent implements OnInit {
     this.tableItem$ = service.tableItem$;
     this.total$ = service.total$;
     this.service.setUserData(ORDERDB)
-    this.myForm = this.fb.group({
+    this.refundsForm = this.fb.group({
       status: ['Processing Refund']
     });
   }
@@ -67,21 +67,16 @@ export class RefundsComponent implements OnInit {
 
   irfan(item: any) {
     this.selectedRefund = item;
-    console.log(this.selectedRefund.cart[0].images[0].url)
   }
 
   updateRefundStatus(refundId: string) {
-    // const newStatus = this.myForm.get('status').value;
-    const formData = this.myForm.value;
-    console.log(refundId, formData);
+    const formData = this.refundsForm.value;
     this.refundService.updateRefundStatus(refundId, formData).subscribe(
       (res) => {
         this.getShopRefunds();
         this.modalService.dismissAll();
-        console.log(res)
       },
       (error) => {
-        console.log(error);
       }
     );
   }
@@ -111,14 +106,12 @@ export class RefundsComponent implements OnInit {
   getShopRefunds() {
     this.refundService.getShopOrders(this.shop._id).subscribe(
       (res) => {
-        console.log(res.orders)
         this.refunds = res.orders.filter(order => {
           return order.status === "Processing Refund" || order.status === "Refund Success" || order.status === "Processing";
         });
         this.search();
       },
       (error) => {
-        console.log(error);
       }
     );
   }
@@ -128,9 +121,20 @@ export class RefundsComponent implements OnInit {
       this.filteredRefunds = this.refunds;
     } else {
       this.filteredRefunds = this.refunds.filter(refund => {
-        return refund._id.toLowerCase().includes(this.searchText.toLowerCase());
+        return (refund._id as string).toLowerCase().includes(this.searchText.toLowerCase());
       });
     }
   }
+
+
+  onSearchTextChange() {
+    if (!this.searchText) {
+      this.filteredRefunds = this.refunds;
+    } else {
+      this.search();
+    }
+  }
+
+
 
 }

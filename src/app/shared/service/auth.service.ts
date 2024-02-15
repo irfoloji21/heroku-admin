@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://murmuring-spire-62571-4282a89100f1.herokuapp.com/api/v2';
+  private apiUrl = 'http://localhost:8000/api/v2';
   private shop: any;
   private userId: string | null = null;
   private user: any;
@@ -26,8 +26,8 @@ export class AuthService {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.http.post<any>(`${this.apiUrl}/shop/login-shop`, body, { headers, withCredentials: true })
       .pipe(tap(shop => {
-        console.log('Login Response:', shop); // shop değerini konsola yazdırın
-        console.log('routerYOL'); // "routerYOL" ifadesini konsola yazdırın
+        console.log('Login Response:', shop);
+        console.log('routerYOL'); 
         if (shop.success) {
           localStorage.setItem('isLoggedIn', 'true');
           this.isLoggedInSubject.next(true);

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/shared/service/auth.service';
 import { BlogService } from 'src/app/shared/service/blog.service';
 import { Blog } from './blog';
@@ -12,8 +12,9 @@ import { Blog } from './blog';
 export class ListBlogComponent implements OnInit {
 
   public blog_list = [];
-  selectedBlogList: Blog | null = null;
-  isModalOpen: boolean = false;
+  public selectedBlogList: Blog | null = null;
+  public isModalOpen: boolean = false;
+  public isEditing: boolean = false;
 
   constructor(
     private blogService: BlogService,
@@ -34,7 +35,13 @@ export class ListBlogComponent implements OnInit {
   editBlog(id) {
     this.blogService.updateBlog(id, {}).subscribe(
       (response) => {
-        this.ngOnInit()
+        if (response.success) {
+          this.selectedBlogList = response.blog;
+          this.isEditing = true; 
+          this.openModal();
+        } else {
+          console.error(response.message);
+        }
       },
       (error) => {
         console.error(error);
@@ -42,8 +49,19 @@ export class ListBlogComponent implements OnInit {
     );
   }
 
+  openModal() {
+    this.isModalOpen = true;
+  }
+
   closeModal() {
     this.isModalOpen = false;
+    this.isEditing = false; 
+    this.selectedBlogList = null; 
+  }
+
+  @HostListener('document:keydown.escape', ['$event']) 
+  handleEscape(event: KeyboardEvent) {
+    this.closeModal();
   }
 
   detailBlog(id: any) {
@@ -51,16 +69,12 @@ export class ListBlogComponent implements OnInit {
     this.blogService.getBlogById(id).subscribe(
       (response) => {
         if (response.success) {
-          // Blog başarıyla alındı, işlemleri burada gerçekleştirin
           this.selectedBlogList = response.blog
-          console.log(this.selectedBlogList);
         } else {
-          // Hata durumu, gelen mesajı loglayabilir veya kullanıcıya bildirebilirsiniz
           console.error(response.message);
         }
       },
       (error) => {
-        // HTTP hatası, ağ hatası vb.
         console.error(error);
       }
     );

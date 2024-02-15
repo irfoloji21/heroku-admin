@@ -19,7 +19,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 export class OrdersComponent implements OnInit {
 
-  myForm: FormGroup;
+  ordersForm: FormGroup;
   public shop: any;
   public orders: any[] = [];
   public searchText: string = '';
@@ -40,7 +40,7 @@ export class OrdersComponent implements OnInit {
     this.tableItem$ = service.tableItem$;
     this.total$ = service.total$;
     this.service.setUserData(ORDERDB)
-    this.myForm = this.fb.group({
+    this.ordersForm = this.fb.group({
       status: ['Processing']
     });
   }
@@ -67,19 +67,17 @@ export class OrdersComponent implements OnInit {
 
   irfan(item: any) {
     this.selectedOrder = item;
-    console.log("slcted", this.selectedOrder)
   }
 
   updateOrderStatus(orderId: string) {
-    const formData = this.myForm.value;
-    console.log(orderId, formData)
+    const formData = this.ordersForm.value;
     this.orderService.updateOrderStatus(orderId, formData).subscribe(
       (res) => {
         this.getShopOrders();
         this.modalService.dismissAll();
       },
       (error) => {
-        console.log(error);
+  
       }
     );
   }
@@ -105,8 +103,8 @@ export class OrdersComponent implements OnInit {
       }
     );
 
-    // Varsayılan olarak seçilen durumu ayarla
-    this.myForm.get('status').setValue('Processing');
+
+    this.ordersForm.get('status').setValue('Processing');
   }
 
   getShopOrders() {
@@ -118,7 +116,6 @@ export class OrdersComponent implements OnInit {
         this.search();
       },
       (error) => {
-        console.log(error);
       }
     );
   }
@@ -130,6 +127,13 @@ export class OrdersComponent implements OnInit {
       this.filteredOrders = this.orders.filter(order => {
         return order._id.toLowerCase().includes(this.searchText.toLowerCase());
       });
+    }
+  }
+  onSearchTextChange() {
+    if (!this.searchText) {
+      this.filteredOrders = this.orders;
+    } else {
+      this.search();
     }
   }
 }

@@ -6,7 +6,7 @@ import { Observable, tap } from 'rxjs';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:8000/api/v2';
+  private apiUrl = 'https://mesesoft-backend-2ccb39a272e8.herokuapp.com/api/v2';
 
   constructor(private http: HttpClient) { }
 
